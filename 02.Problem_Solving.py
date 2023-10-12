@@ -1,21 +1,17 @@
-# Tested against sample input/output
-number_of_inputs = int(input())
-students = []
-
-
 class Student:
     def __init__(self, id, name, cgpa):
-        self.id = id
-        self.name = name
-        self.cgpa = cgpa
+        self.id, self.name, self.cgpa = id, name, cgpa
 
+    @classmethod
+    def from_input(cls, s):
+        id, name, cgpa = s.split()
+        return cls(int(id), name, float(cgpa))
 
-for _ in range(number_of_inputs):
-    input_str = input("")
-    inputs = input_str.split(" ")
-    students.append(Student(int(inputs[0]), inputs[1], float(inputs[2])))
+try:
+    students = [Student.from_input(input("Enter student details (id name cgpa): ")) for _ in range(int(input("Enter the number of students: ")))]
 
-students.sort(key=lambda x: (-x.cgpa, x.name, x.id))
+    for student in sorted(students, key=lambda x: (-x.cgpa, x.name, x.id)):
+        print(student.name)
 
-for student in students:
-    print("{}".format(student.name))
+except ValueError:
+    print("Invalid input!")
